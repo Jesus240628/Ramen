@@ -8,7 +8,7 @@ package mx.itson.ramen.enumerador;
 import com.google.gson.annotations.SerializedName;
 
 /**
- *
+ * Enumerador para determinar si es deposito o retiro
  * @author Jesus Javier-240628
  */
 public enum Tipo {
