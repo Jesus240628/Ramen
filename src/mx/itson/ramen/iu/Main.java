@@ -5,6 +5,21 @@
  */
 package mx.itson.ramen.iu;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
+import mx.itson.ramen.entidades.Estado;
+import mx.itson.ramen.entidades.Transferencia;
+import mx.itson.ramen.enumerador.Tipo;
+
 /**
  *
  * @author Jesus Javier-240628
@@ -28,138 +43,268 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        cbxMeses = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        lblCuenta = new javax.swing.JLabel();
-        lblCliente = new javax.swing.JLabel();
-        lblNombre = new javax.swing.JLabel();
-        lblDireccion = new javax.swing.JLabel();
-        lblMoneda = new javax.swing.JLabel();
         btnCargar = new javax.swing.JButton();
-        lblCiudad = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblResultado = new javax.swing.JTable();
+        lblSaldoPeriodo = new javax.swing.JLabel();
+        lblCliente = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblMoneda = new javax.swing.JLabel();
+        lblCuenta = new javax.swing.JLabel();
         lblRfc = new javax.swing.JLabel();
+        lblCiudad = new javax.swing.JLabel();
+        lblSaldoFinal = new javax.swing.JLabel();
+        lblDepositos = new javax.swing.JLabel();
+        lblRetiros = new javax.swing.JLabel();
+        lblDireccion = new javax.swing.JLabel();
         lblCp = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        cbxMeses = new javax.swing.JComboBox<>();
+        lblProducto = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Seleccione un Mes");
-
-        cbxMeses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Seleccione el archivo a cargar:");
 
-        lblCuenta.setText("Cuenta");
+        btnCargar.setText("Cargar");
+        btnCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarActionPerformed(evt);
+            }
+        });
+
+        tblResultado.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Fecha", "Descripcion", "Deposito", "Retiro", "subtotal"
+            }
+        ));
+        jScrollPane1.setViewportView(tblResultado);
 
         lblCliente.setText("Cliente");
 
         lblNombre.setText("Nombre");
 
-        lblDireccion.setText("Direccion");
-
         lblMoneda.setText("Moneda");
 
-        btnCargar.setText("Cargar");
-
-        lblCiudad.setText("Ciudad");
-
-        tblResultado.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tblResultado);
+        lblCuenta.setText("Cuenta");
 
         lblRfc.setText("RFC");
 
+        lblCiudad.setText("Ciudad");
+
+        lblSaldoFinal.setText("Saldo final");
+
+        lblDepositos.setText("Depositos");
+
+        lblRetiros.setText("Retiros");
+
+        lblDireccion.setText("Direccion");
+
         lblCp.setText("CP");
+
+        jLabel1.setText("Seleccione el mes ");
+
+        cbxMeses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbxMeses, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCuenta)
-                    .addComponent(lblCliente)
-                    .addComponent(lblNombre)
-                    .addComponent(lblDireccion)
-                    .addComponent(lblMoneda)
-                    .addComponent(lblCiudad)
-                    .addComponent(jLabel1)
-                    .addComponent(lblRfc)
-                    .addComponent(lblCp))
-                .addGap(78, 78, 78)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblCuenta)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDireccion)
+                            .addComponent(lblRetiros)
+                            .addComponent(lblDepositos)
+                            .addComponent(lblCliente)
+                            .addComponent(lblRfc)
+                            .addComponent(lblCp)
+                            .addComponent(lblCiudad)
+                            .addComponent(lblSaldoFinal)
+                            .addComponent(lblNombre)
+                            .addComponent(lblMoneda))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbxMeses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(lblSaldoPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(btnCargar))
+                .addGap(194, 194, 194)
+                .addComponent(lblSaldoPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCargar)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(cbxMeses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblCliente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCp)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cbxMeses, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCuenta)
-                        .addGap(4, 4, 4)
                         .addComponent(lblMoneda)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCliente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(11, 11, 11)
+                        .addComponent(lblCuenta)
+                        .addGap(3, 3, 3)
                         .addComponent(lblNombre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDireccion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCiudad)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblRfc)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCp))
+                        .addComponent(lblCiudad)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblDireccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblSaldoFinal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDepositos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblRetiros))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
+
+        lblProducto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(697, 697, 697)
+                        .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 859, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(31, 31, 31)
+                .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+        try{
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                // Si selecciona un archivo Json que se convierte en un archivo de bytes que luego se lee y pasa a tipo string
+                File archivo = fileChooser.getSelectedFile();
+                byte archivoBytes[] = Files.readAllBytes(archivo.toPath());
+                
+                String contenido = new String(archivoBytes, StandardCharsets.UTF_8);
+                //formato de moneda local de lenguaje español, moneda mexicana
+                Locale local = new Locale("ea","MX");
+                NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(local);
+                
+                Estado estado = new Estado().deserializar(contenido); 
+                //Añade los valores de json a labels por medio de getters
+                lblNombre.setText("Nombre: " + estado.getCliente().getNombre());
+                lblRfc.setText ("RFC: " + estado.getCliente().getRfc());
+                lblDireccion.setText("Direccion: " + estado.getCliente().getDireccion());
+                lblCiudad.setText("Ciudad: " + estado.getCliente().getCiudad());
+                lblProducto.setText(estado.getProducto());
+                lblCuenta.setText("Cuenta: " + estado.getCuenta());
+                lblMoneda.setText("Moneda: " + estado.getMoneda());
+                lblCp.setText("Cp: " + estado.getCliente().getCp());
+                
+                DefaultTableModel model = (DefaultTableModel) tblResultado.getModel();
+                model.setRowCount(0);
+                //Formato para la fecha representado por dia-mes-año
+                DateFormat formatoFecha = new SimpleDateFormat("dd/MM/YYYY");
+                
+                int mes = cbxMeses.getSelectedIndex();
+                //importa los valores de la lista  
+                List <Transferencia> transferencias = new ArrayList<>();
+               //For eache para cada transferencia de la listo
+                    for (Transferencia m : estado.getTransferencias()){
+                        //Valida el mes elegido del comboBox
+                        if(m.getFecha().getMonth() == mes){
+                           transferencias.add(m);
+                            }
+                        }
+                    //compara la fechas y lo despiega de menor a mayor 
+                    transferencias.sort((m1, m2) -> m1.getFecha().compareTo(m2.getFecha()));
+                    //Variables utilizadas para luego ser mostradas en labels
+                    double subtotal = 0;
+                    double depositos = 0;
+                    double retiros = 0;
+                    //For eache para cada movimiento de la lista 
+                    for(Transferencia m : transferencias){
+                        //condicional si es deposito 
+                        if(m.getTipo() == Tipo.DEPOSITO ) {
+                        m.setDepositos(m.getCantidad());
+                        //suma la cantidad de depositos 
+                        subtotal += m.getCantidad();
+                        depositos += m.getDepositos();  
+                        model.addRow(new Object[] {
+                        formatoFecha.format(m.getFecha()),m.getDescripcion(),formatoMoneda.format(m.getCantidad()),"",formatoMoneda.format(subtotal)});
+                        
+                        //condicional para retiros
+                        }else if (m.getTipo() == Tipo.RETIRO ) {
+                        m.setDepositos(m.getCantidad());
+                        subtotal -= m.getCantidad();
+                        //suma la cantidad de retiros
+                        retiros -= m.getDepositos();
+                        model.addRow(new Object[] {
+                        formatoFecha.format(m.getFecha()),m.getDescripcion(),"",formatoMoneda.format(m.getCantidad()),formatoMoneda.format(subtotal)});
+                        }
+                        
+                        lblSaldoPeriodo.setText("Saldo final del periodo: " + formatoMoneda.format(subtotal));
+                        lblSaldoFinal.setText("Saldo Final: " + formatoMoneda.format(subtotal));
+                        lblDepositos.setText("Depositos: " + formatoMoneda.format(depositos));
+                        lblRetiros.setText("Retiros: " + formatoMoneda.format(retiros));
+                    }
+                }
+        }catch (Exception ex) {
+            System.err.print("Ocurrió un error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnCargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,10 +352,15 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblCp;
     private javax.swing.JLabel lblCuenta;
+    private javax.swing.JLabel lblDepositos;
     private javax.swing.JLabel lblDireccion;
     private javax.swing.JLabel lblMoneda;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblProducto;
+    private javax.swing.JLabel lblRetiros;
     private javax.swing.JLabel lblRfc;
+    private javax.swing.JLabel lblSaldoFinal;
+    private javax.swing.JLabel lblSaldoPeriodo;
     private javax.swing.JTable tblResultado;
     // End of variables declaration//GEN-END:variables
 }

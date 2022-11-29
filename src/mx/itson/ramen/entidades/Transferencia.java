@@ -9,10 +9,11 @@ import java.util.Date;
 import mx.itson.ramen.enumerador.Tipo;
 
 /**
- *
+ *Atributos de transferencia con getters and setters
  * @author Jesus Javier-240628
  */
 public class Transferencia {
+    
    private Date fecha; //Fecha de tipo fecha
    private String descripcion; //Descripcion de transferencia
    private double cantidad; //Cantidad de transferencia

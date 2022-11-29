@@ -11,12 +11,12 @@ import java.util.List;
 
 
 /**
- *
+ * Atributos de estado con getters and setters
  * @author Jesus Javier-240628
  */
 public class Estado {
     private String producto; //Producto de la cuenta
-    private int cuenta; //Numero de la cuenta
+    private String cuenta; //Numero de la cuenta
     private String moneda; //Moneda de la cuenta
     private Cliente cliente; //Cliente tipo cliente de la cuenta
     private List <Transferencia> transferencias; //Lista tipo tranferencia de la cuenta
@@ -48,14 +48,14 @@ public class Estado {
     /**
      * @return the cuenta
      */
-    public int getCuenta() {
+    public String getCuenta() {
         return cuenta;
     }
 
     /**
      * @param cuenta the cuenta to set
      */
-    public void setCuenta(int cuenta) {
+    public void setCuenta(String cuenta) {
         this.cuenta = cuenta;
     }
 

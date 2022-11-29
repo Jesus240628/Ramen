@@ -6,7 +6,7 @@
 package mx.itson.ramen.entidades;
 
 /**
- *
+ * Atributos de cliente con getters and setters
  * @author Jesus Javier-240628
  */
 public class Cliente {
