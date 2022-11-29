@@ -10,11 +10,11 @@ package mx.itson.ramen.entidades;
  * @author Jesus Javier-240628
  */
 public class Cliente {
-    private String nombre;
-    private String direccion;
-    private String ciudad;
-    private String rfc;
-    private int cp;
+    private String nombre; //Nombre del propetario de la cuenta
+    private String direccion; //Direccion del propetario de la cuenta
+    private String ciudad; //Ciudad del propetario de la cuenta
+    private String rfc; //RFC del propetario de la cuenta
+    private int cp; //Codigo Postal del propetario de la cuenta
 
     /**
      * @return the nombre
